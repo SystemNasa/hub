@@ -1,4 +1,3 @@
--- Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -14,42 +13,39 @@ ScreenGui.Name = "ServerCrasherGUI"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = CoreGui
 
--- Main Frame (modern design)
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 320, 0, 140)
-MainFrame.Position = UDim2.new(0.5, -160, 0.5, -70)
-MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+MainFrame.Size = UDim2.new(0, 400, 0, 240)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -120)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Parent = ScreenGui
 
 local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 16)
+UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
-local UIGradient = Instance.new("UIGradient")
-UIGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 30)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 20))
-}
-UIGradient.Rotation = 45
-UIGradient.Parent = MainFrame
-
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Thickness = 1
-UIStroke.Color = Color3.fromRGB(50, 50, 60)
-UIStroke.Transparency = 0.8
+UIStroke.Thickness = 2
+UIStroke.Color = Color3.fromRGB(40, 40, 50)
+UIStroke.Transparency = 0.6
 UIStroke.Parent = MainFrame
 
--- Title Bar
+local Shadow = Instance.new("UIStroke")
+Shadow.Thickness = 4
+Shadow.Color = Color3.fromRGB(0, 0, 0)
+Shadow.Transparency = 0.8
+Shadow.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+Shadow.Parent = MainFrame
+
 local TitleBar = Instance.new("Frame")
-TitleBar.Size = UDim2.new(1, 0, 0, 32)
-TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+TitleBar.Size = UDim2.new(1, 0, 0, 40)
+TitleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
 TitleBar.BorderSizePixel = 0
 TitleBar.Parent = MainFrame
 
 local TitleCorner = Instance.new("UICorner")
-TitleCorner.CornerRadius = UDim.new(0, 16)
+TitleCorner.CornerRadius = UDim.new(0, 12)
 TitleCorner.Parent = TitleBar
 
 local TitleLabel = Instance.new("TextLabel")
@@ -58,28 +54,27 @@ TitleLabel.BackgroundTransparency = 1
 TitleLabel.Text = "Server Control"
 TitleLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
 TitleLabel.Font = Enum.Font.SourceSansBold
-TitleLabel.TextSize = 20
+TitleLabel.TextSize = 22
 TitleLabel.Parent = TitleBar
 
--- Minimize and Close Buttons
 local MinimizeButton = Instance.new("TextButton")
-MinimizeButton.Size = UDim2.new(0, 32, 0, 32)
-MinimizeButton.Position = UDim2.new(1, -72, 0, 0)
-MinimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+MinimizeButton.Size = UDim2.new(0, 36, 0, 36)
+MinimizeButton.Position = UDim2.new(1, -80, 0, 2)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
 MinimizeButton.Text = "–"
 MinimizeButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 MinimizeButton.Font = Enum.Font.SourceSansBold
-MinimizeButton.TextSize = 20
+MinimizeButton.TextSize = 24
 MinimizeButton.Parent = TitleBar
 
 local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0, 32, 0, 32)
-CloseButton.Position = UDim2.new(1, -36, 0, 0)
-CloseButton.BackgroundColor3 = Color3.fromRGB(60, 40, 40)
+CloseButton.Size = UDim2.new(0, 36, 0, 36)
+CloseButton.Position = UDim2.new(1, -38, 0, 2)
+CloseButton.BackgroundColor3 = Color3.fromRGB(50, 35, 35)
 CloseButton.Text = "×"
-CloseButton.TextColor3 = Color3.fromRGB(255, 100, 100)
+CloseButton.TextColor3 = Color3.fromRGB(255, 120, 120)
 CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 20
+CloseButton.TextSize = 24
 CloseButton.Parent = TitleBar
 
 for _, btn in pairs({MinimizeButton, CloseButton}) do
@@ -88,32 +83,131 @@ for _, btn in pairs({MinimizeButton, CloseButton}) do
     corner.Parent = btn
 end
 
--- Content Frame
-local ContentFrame = Instance.new("Frame")
-ContentFrame.Size = UDim2.new(1, -20, 1, -44)
-ContentFrame.Position = UDim2.new(0, 10, 0, 38)
-ContentFrame.BackgroundTransparency = 1
-ContentFrame.Parent = MainFrame
+local TabBar = Instance.new("Frame")
+TabBar.Size = UDim2.new(0, 100, 1, -40)
+TabBar.Position = UDim2.new(0, 0, 0, 40)
+TabBar.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+TabBar.BorderSizePixel = 0
+TabBar.Parent = MainFrame
 
--- Lag Server Button
+local TabBarCorner = Instance.new("UICorner")
+TabBarCorner.CornerRadius = UDim.new(0, 12)
+TabBarCorner.Parent = TabBar
+
+local MainTabButton = Instance.new("TextButton")
+MainTabButton.Size = UDim2.new(1, -10, 0, 50)
+MainTabButton.Position = UDim2.new(0, 5, 0, 10)
+MainTabButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+MainTabButton.Text = "Main"
+MainTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MainTabButton.Font = Enum.Font.SourceSansSemibold
+MainTabButton.TextSize = 18
+MainTabButton.TextXAlignment = Enum.TextXAlignment.Center
+MainTabButton.Parent = TabBar
+
+local SettingsTabButton = Instance.new("TextButton")
+SettingsTabButton.Size = UDim2.new(1, -10, 0, 50)
+SettingsTabButton.Position = UDim2.new(0, 5, 0, 70)
+SettingsTabButton.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+SettingsTabButton.Text = "Settings"
+SettingsTabButton.TextColor3 = Color3.fromRGB(180, 180, 180)
+SettingsTabButton.Font = Enum.Font.SourceSansSemibold
+SettingsTabButton.TextSize = 18
+SettingsTabButton.TextXAlignment = Enum.TextXAlignment.Center
+SettingsTabButton.Parent = TabBar
+
+for _, btn in pairs({MainTabButton, SettingsTabButton}) do
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = btn
+end
+
+local ContentArea = Instance.new("Frame")
+ContentArea.Size = UDim2.new(0, 290, 1, -50)
+ContentArea.Position = UDim2.new(0, 110, 0, 45)
+ContentArea.BackgroundTransparency = 1
+ContentArea.Parent = MainFrame
+
+local MainFrameContent = Instance.new("Frame")
+MainFrameContent.Name = "MainFrameContent"
+MainFrameContent.Size = UDim2.new(1, 0, 1, 0)
+MainFrameContent.BackgroundTransparency = 1
+MainFrameContent.Parent = ContentArea
+MainFrameContent.Visible = true
+
+local SettingsFrame = Instance.new("Frame")
+SettingsFrame.Size = UDim2.new(1, 0, 1, 0)
+SettingsFrame.BackgroundTransparency = 1
+SettingsFrame.Parent = ContentArea
+SettingsFrame.Visible = false
+
 local LagServerButton = Instance.new("TextButton")
-LagServerButton.Size = UDim2.new(1, 0, 0, 50)
-LagServerButton.Position = UDim2.new(0, 0, 0.5, -25)
-LagServerButton.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+LagServerButton.Size = UDim2.new(1, -20, 0, 50)
+LagServerButton.Position = UDim2.new(0, 10, 0, 20)
+LagServerButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
 LagServerButton.Text = "Lag Server: OFF"
 LagServerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 LagServerButton.Font = Enum.Font.SourceSansSemibold
-LagServerButton.TextSize = 18
-LagServerButton.Parent = ContentFrame
+LagServerButton.TextSize = 20
+LagServerButton.Parent = MainFrameContent
 
-local ButtonCorner = Instance.new("UICorner")
-ButtonCorner.CornerRadius = UDim.new(0, 12)
-ButtonCorner.Parent = LagServerButton
+local AnnoyServerButton = Instance.new("TextButton")
+AnnoyServerButton.Size = UDim2.new(1, -20, 0, 50)
+AnnoyServerButton.Position = UDim2.new(0, 10, 0, 80)
+AnnoyServerButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+AnnoyServerButton.Text = "Annoy Server: OFF"
+AnnoyServerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AnnoyServerButton.Font = Enum.Font.SourceSansSemibold
+AnnoyServerButton.TextSize = 20
+AnnoyServerButton.Parent = MainFrameContent
 
-local ButtonStroke = Instance.new("UIStroke")
-ButtonStroke.Thickness = 1
-ButtonStroke.Color = Color3.fromRGB(60, 60, 70)
-ButtonStroke.Parent = LagServerButton
+for _, btn in pairs({LagServerButton, AnnoyServerButton}) do
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = btn
+    local stroke = Instance.new("UIStroke")
+    stroke.Thickness = 1
+    stroke.Color = Color3.fromRGB(70, 70, 80)
+    stroke.Parent = btn
+end
+
+local NotificationToggle = Instance.new("TextButton")
+NotificationToggle.Size = UDim2.new(1, -20, 0, 40)
+NotificationToggle.Position = UDim2.new(0, 10, 0, 20)
+NotificationToggle.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+NotificationToggle.Text = "Notification Sound: ON"
+NotificationToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+NotificationToggle.Font = Enum.Font.SourceSansSemibold
+NotificationToggle.TextSize = 18
+NotificationToggle.Parent = SettingsFrame
+
+local NotificationCorner = Instance.new("UICorner")
+NotificationCorner.CornerRadius = UDim.new(0, 10)
+NotificationCorner.Parent = NotificationToggle
+
+local NotificationStroke = Instance.new("UIStroke")
+NotificationStroke.Thickness = 1
+NotificationStroke.Color = Color3.fromRGB(70, 70, 80)
+NotificationStroke.Parent = NotificationToggle
+
+local DiscordButton = Instance.new("TextButton")
+DiscordButton.Size = UDim2.new(1, -20, 0, 40)
+DiscordButton.Position = UDim2.new(0, 10, 0, 70)
+DiscordButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+DiscordButton.Text = "Copy Discord Invite"
+DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordButton.Font = Enum.Font.SourceSansSemibold
+DiscordButton.TextSize = 18
+DiscordButton.Parent = SettingsFrame
+
+local DiscordCorner = Instance.new("UICorner")
+DiscordCorner.CornerRadius = UDim.new(0, 10)
+DiscordCorner.Parent = DiscordButton
+
+local DiscordStroke = Instance.new("UIStroke")
+DiscordStroke.Thickness = 1
+DiscordStroke.Color = Color3.fromRGB(70, 70, 80)
+DiscordStroke.Parent = DiscordButton
 
 -----------------------------------------------------------
 -- Draggable Functionality
@@ -152,20 +246,21 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- Minimize and Close Functionality
 local minimized = false
-local expandedSize = UDim2.new(0, 320, 0, 140)
-local minimizedSize = UDim2.new(0, 320, 0, 32)
+local expandedSize = UDim2.new(0, 400, 0, 240)
+local minimizedSize = UDim2.new(0, 400, 0, 40)
 
 MinimizeButton.MouseButton1Click:Connect(function()
     minimized = not minimized
     if minimized then
-        ContentFrame.Visible = false
-        MainFrame:TweenSize(minimizedSize, "Out", "Quad", 0.2, true)
+        TabBar.Visible = false
+        ContentArea.Visible = false
+        MainFrame:TweenSize(minimizedSize, "Out", "Quad", 0.3, true)
         MinimizeButton.Text = "+"
     else
-        ContentFrame.Visible = true
-        MainFrame:TweenSize(expandedSize, "Out", "Quad", 0.2, true)
+        TabBar.Visible = true
+        ContentArea.Visible = true
+        MainFrame:TweenSize(expandedSize, "Out", "Quad", 0.3, true)
         MinimizeButton.Text = "–"
     end
 end)
@@ -173,6 +268,36 @@ end)
 CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
+
+local function setTabActive(tabButton, frame)
+    MainFrameContent.Visible = frame == MainFrameContent
+    SettingsFrame.Visible = frame == SettingsFrame
+    MainTabButton.BackgroundColor3 = frame == MainFrameContent and Color3.fromRGB(45, 45, 50) or Color3.fromRGB(35, 35, 40)
+    SettingsTabButton.BackgroundColor3 = frame == SettingsFrame and Color3.fromRGB(45, 45, 50) or Color3.fromRGB(35, 35, 40)
+    MainTabButton.TextColor3 = frame == MainFrameContent and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(180, 180, 180)
+    SettingsTabButton.TextColor3 = frame == SettingsFrame and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(180, 180, 180)
+end
+
+MainTabButton.MouseButton1Click:Connect(function()
+    setTabActive(MainTabButton, MainFrameContent)
+end)
+
+SettingsTabButton.MouseButton1Click:Connect(function()
+    setTabActive(SettingsTabButton, SettingsFrame)
+end)
+
+for _, btn in pairs({MainTabButton, SettingsTabButton}) do
+    btn.MouseEnter:Connect(function()
+        if btn.BackgroundColor3 ~= Color3.fromRGB(45, 45, 50) then
+            btn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+        end
+    end)
+    btn.MouseLeave:Connect(function()
+        if btn.BackgroundColor3 ~= Color3.fromRGB(45, 45, 50) then
+            btn.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
+        end
+    end)
+end
 
 -----------------------------------------------------------
 -- Spectate Setup
@@ -250,23 +375,43 @@ UIStroke3.Thickness = 5
 UIStroke3.Parent = PlayerDisplay
 
 local allPlayers = {}
-local function updatePlayers()
+local currentSpectateTarget = nil
+
+local function updatePlayers(leavingPlayer)
+    local oldPlayers = allPlayers
     allPlayers = {}
     for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= localPlayer then -- Exclude LocalPlayer
+        if plr ~= localPlayer then
             table.insert(allPlayers, plr)
         end
     end
-    if #allPlayers == 0 then
+    
+    if spectating and #allPlayers > 0 then
+        if leavingPlayer and leavingPlayer == currentSpectateTarget then
+            local oldIndex = PlayerIndex.Value
+            PlayerIndex.Value = math.clamp(oldIndex, 1, #allPlayers)
+            currentSpectateTarget = allPlayers[PlayerIndex.Value]
+        else
+            local newIndex = table.find(allPlayers, currentSpectateTarget)
+            if newIndex then
+                PlayerIndex.Value = newIndex
+            else
+                PlayerIndex.Value = math.clamp(PlayerIndex.Value, 1, #allPlayers)
+                currentSpectateTarget = allPlayers[PlayerIndex.Value]
+            end
+        end
+    elseif #allPlayers == 0 then
         PlayerIndex.Value = 1
+        currentSpectateTarget = nil
     elseif PlayerIndex.Value > #allPlayers then
         PlayerIndex.Value = #allPlayers
+        currentSpectateTarget = allPlayers[PlayerIndex.Value]
     end
 end
 updatePlayers()
 
-Players.PlayerAdded:Connect(updatePlayers)
-Players.PlayerRemoving:Connect(updatePlayers)
+Players.PlayerAdded:Connect(function() updatePlayers() end)
+Players.PlayerRemoving:Connect(function(player) updatePlayers(player) end)
 
 local function onPress(skip)
     if #allPlayers == 0 then return end
@@ -278,6 +423,7 @@ local function onPress(skip)
     else
         PlayerIndex.Value = newIndex
     end
+    currentSpectateTarget = allPlayers[PlayerIndex.Value]
 end
 
 LeftButton.MouseButton1Click:Connect(function() onPress(-1) end)
@@ -294,6 +440,7 @@ RunService.RenderStepped:Connect(function()
         if targetPlayer and targetPlayer.Character then
             cam.CameraSubject = targetPlayer.Character:WaitForChild("Humanoid", 5)
             PlayerDisplay.Text = targetPlayer.Name
+            currentSpectateTarget = targetPlayer
         end
     elseif not spectating then
         if localPlayer.Character then
@@ -318,7 +465,7 @@ local lagToggled = false
 local lagEnabled = false
 local ragdollConnection
 local lastModifiedUsername
-local buttonCooldown = false
+local lagButtonCooldown = false
 
 local ragdollEvent = ReplicatedStorage:FindFirstChild("RagdollEvent")
 local unragdollEvent = ReplicatedStorage:FindFirstChild("UnragdollEvent")
@@ -363,22 +510,20 @@ local function toggleRagdoll()
     local rootPart = character:FindFirstChild("HumanoidRootPart")
     
     if lagEnabled then
-        -- 1. Start spectating
         updatePlayers()
         if #allPlayers > 0 then
             spectating = true
             SpectateFrame.Visible = true
-            PlayerIndex.Value = 1 -- Start with the first valid player
-            wait(1) -- Brief delay to ensure spectating starts
+            PlayerIndex.Value = 1
+            currentSpectateTarget = allPlayers[PlayerIndex.Value]
+            wait(1)
         end
 
-        -- 2. Move LocalPlayer to (4224, 26, 62)
         if rootPart then
             rootPart.CFrame = CFrame.new(4224, 26, 62)
-            wait(0.5) -- Small delay to ensure position update
+            wait(0.5)
         end
 
-        -- 3. Lag the server
         if lagToggled then
             lastModifiedUsername = "izakf166"
             ModifyUsername_upvr:FireServer("izakf166")
@@ -435,15 +580,10 @@ local function toggleRagdoll()
             spawn(loopFunction)
         end
     else
-        -- 1. Stop lag server
         unragdollEvent:FireServer()
-        if ragdollConnection then
-            ragdollConnection:Disconnect()
-        end
+        if ragdollConnection then ragdollConnection:Disconnect() end
         for _, part in pairs(character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.Anchored = false
-            end
+            if part:IsA("BasePart") then part.Anchored = false end
         end
         if humanoid then
             humanoid.PlatformStand = false
@@ -451,47 +591,607 @@ local function toggleRagdoll()
         end
         ToggleDisallowEvent:FireServer()
         ModifyUserEvent:FireServer(localPlayer.Name)
-        wait(0.5) -- Reduced from 1 to 0.5
+        wait(0.5)
         ToggleDisallowEvent:FireServer()
 
-        -- 2. Move character back to a default position
-        if rootPart then
-            rootPart.CFrame = CFrame.new(0, 50, 0) -- Adjust to a safe location in the game
-        end
-        wait(1) -- Reduced from 2 to 1
+        if rootPart then rootPart.CFrame = CFrame.new(0, 50, 0) end
+        wait(1)
 
-        -- 3. Stop spectating
         spectating = false
         SpectateFrame.Visible = false
+        currentSpectateTarget = nil
     end
 end
 
 LagServerButton.MouseButton1Click:Connect(function()
-    if buttonCooldown then return end -- Prevent clicking during cooldown
+    if lagButtonCooldown or annoyToggled then return end
 
-    -- Toggle the lag state
     lagToggled = not lagToggled
     lagEnabled = lagToggled
     LagServerButton.Text = "Lag Server: " .. (lagToggled and "ON" or "OFF")
-    LagServerButton.BackgroundColor3 = lagToggled and Color3.fromRGB(60, 40, 40) or Color3.fromRGB(40, 40, 45)
+    LagServerButton.BackgroundColor3 = lagToggled and Color3.fromRGB(60, 40, 40) or Color3.fromRGB(45, 45, 50)
 
-    -- Start the toggle process
     toggleRagdoll()
 
-    -- Apply 10-second cooldown
-    buttonCooldown = true
-    LagServerButton.TextTransparency = 0.5 -- Dim the text to indicate cooldown
-    LagServerButton.AutoButtonColor = false -- Disable button interaction visually
+    lagButtonCooldown = true
+    LagServerButton.TextTransparency = 0.5
+    LagServerButton.AutoButtonColor = false
     spawn(function()
-        wait(10) -- 10-second cooldown
-        buttonCooldown = false
-        LagServerButton.TextTransparency = 0 -- Restore text visibility
-        LagServerButton.AutoButtonColor = true -- Re-enable button interaction
+        wait(10)
+        lagButtonCooldown = false
+        LagServerButton.TextTransparency = 0
+        LagServerButton.AutoButtonColor = true
     end)
 end)
 
 -----------------------------------------------------------
--- Anti Lag (ON by default)
+-- Annoy Server Functionality
+local annoyToggled = false
+local annoyConnection
+local originalPositions = {}
+local currentKeyframe = 1
+local animationTime = 0
+localascendant = false
+local lastKeyframeTime = 0
+local nearestTargetPlayers = {}
+local farthestTargetPlayers = {}
+local randomTargetPlayers = {}
+local initialHumanoidRootPartCFrame = nil
+
+local keyframes = {
+    {
+        duration = 0.1,
+        config = {
+            Humanoid = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "ad0",
+                matchTargetPart = false
+            },
+            Head = {
+                position = Vector3.new(101, 3, -2152),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            UpperTorso = {
+                position = Vector3.new(101, 15, -2150002),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LowerTorso = {
+                position = Vector3.new(101, -3.2, -2150002),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftUpperArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftLowerArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftHand = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightUpperArm = {
+                position = Vector3.new(999999, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightLowerArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightHand = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftUpperLeg = {
+                position = Vector3.new(-10000000, 15, 25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftLowerLeg = {
+                position = Vector3.new(-10000000, 15, -25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftFoot = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightUpperLeg = {
+                position = Vector3.new(10000000, 15, 25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightLowerLeg = {
+                position = Vector3.new(10000000, 15, -25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightFoot = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            }
+        }
+    },
+    {
+        duration = 0.1,
+        config = {
+            Humanoid = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "ad0",
+                matchTargetPart = false
+            },
+            Head = {
+                position = Vector3.new(101, 3, -2152),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            UpperTorso = {
+                position = Vector3.new(101, -3.2, -2150002),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LowerTorso = {
+                position = Vector3.new(101, 7, -2150002),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftUpperArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftLowerArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftHand = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightUpperArm = {
+                position = Vector3.new(999999, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightLowerArm = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightHand = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftUpperLeg = {
+                position = Vector3.new(-10000000, 15, 25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftLowerLeg = {
+                position = Vector3.new(-10000000, 15, -25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            LeftFoot = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightUpperLeg = {
+                position = Vector3.new(10000000, 15, 25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightLowerLeg = {
+                position = Vector3.new(10000000, 15, -25000000),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            },
+            RightFoot = {
+                position = Vector3.new(0, 0, 0),
+                rotation = Vector3.new(0, 0, 0),
+                targetPlayer = "",
+                matchTargetPart = true
+            }
+        }
+    },
+}
+
+local bodyParts = {}
+for partName, _ in pairs(keyframes[1].config) do
+    table.insert(bodyParts, partName)
+end
+
+local function FindPlayerByPartialName(partialName, partName)
+    if partialName == "nearest" then
+        if nearestTargetPlayers[partName] then
+            return nearestTargetPlayers[partName]
+        else
+            local localCharacter = localPlayer.Character
+            if not localCharacter then return nil end
+            local localHumanoidRootPart = localCharacter:FindFirstChild("HumanoidRootPart")
+            if not localHumanoidRootPart then return nil end
+
+            local nearestPlayer = nil
+            local nearestDistance = math.huge
+            
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local character = player.Character
+                    if character then
+                        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                        if humanoidRootPart then
+                            local distance = (localHumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+                            if distance < nearestDistance then
+                                nearestDistance = distance
+                                nearestPlayer = player
+                            end
+                        end
+                    end
+                end
+            end
+            nearestTargetPlayers[partName] = nearestPlayer
+            return nearestPlayer
+        end
+    elseif partialName == "farthest" then
+        if farthestTargetPlayers[partName] then
+            return farthestTargetPlayers[partName]
+        else
+            local localCharacter = localPlayer.Character
+            if not localCharacter then return nil end
+            local localHumanoidRootPart = localCharacter:FindFirstChild("HumanoidRootPart")
+            if not localHumanoidRootPart then return nil end
+
+            local farthestPlayer = nil
+            local farthestDistance = -math.huge
+            
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= localPlayer then
+                    local character = player.Character
+                    if character then
+                        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                        if humanoidRootPart then
+                            local distance = (localHumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+                            if distance > farthestDistance then
+                                farthestDistance = distance
+                                farthestPlayer = player
+                            end
+                        end
+                    end
+                end
+            end
+            farthestTargetPlayers[partName] = farthestPlayer
+            return farthestPlayer
+        end
+    elseif partialName == "random" then
+        if randomTargetPlayers[partName] then
+            return randomTargetPlayers[partName]
+        else
+            local allPlayers = Players:GetPlayers()
+            local validPlayers = {}
+            for _, player in ipairs(allPlayers) do
+                if player ~= localPlayer then
+                    table.insert(validPlayers, player)
+                end
+            end
+            if #validPlayers > 0 then
+                local randomIndex = math.random(1, #validPlayers)
+                local randomPlayer = validPlayers[randomIndex]
+                randomTargetPlayers[partName] = randomPlayer
+                return randomPlayer
+            end
+            return nil
+        end
+    end
+    
+    partialName = partialName:lower()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Name:lower():find(partialName) or (player.DisplayName and player.DisplayName:lower():find(partialName)) then
+            return player
+        end
+    end
+    return nil
+end
+
+local function SaveOriginalPositions()
+    local character = localPlayer.Character
+    if character then
+        for partName, _ in pairs(keyframes[1].config) do
+            if partName ~= "Humanoid" then
+                local part = character:FindFirstChild(partName)
+                if part then
+                    originalPositions[partName] = part.CFrame
+                end
+            end
+        end
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            initialHumanoidRootPartCFrame = humanoidRootPart.CFrame
+        end
+    end
+end
+
+local function UpdateBodyPart(character, partName, currentConfig, nextConfig, alpha)
+    local part = character:FindFirstChild(partName)
+    if part and annoyToggled and partName ~= "Humanoid" then
+        local baseCFrame = originalPositions[partName]
+        if baseCFrame then
+            local currentTargetCFrame = baseCFrame
+            local nextTargetCFrame = baseCFrame
+            
+            if currentConfig.targetPlayer and currentConfig.targetPlayer ~= "" then
+                local currentPlayer = FindPlayerByPartialName(currentConfig.targetPlayer, partName)
+                if currentPlayer and currentPlayer.Character then
+                    if currentConfig.matchTargetPart then
+                        local targetPart = currentPlayer.Character:FindFirstChild(partName)
+                        if targetPart then
+                            currentTargetCFrame = CFrame.new(targetPart.Position)
+                        end
+                    else
+                        local targetHumanoidRootPart = currentPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if targetHumanoidRootPart then
+                            currentTargetCFrame = CFrame.new(targetHumanoidRootPart.Position)
+                        end
+                    end
+                end
+            else
+                currentTargetCFrame = CFrame.new(baseCFrame.Position)
+            end
+            
+            if nextConfig.targetPlayer and nextConfig.targetPlayer ~= "" then
+                local nextPlayer = FindPlayerByPartialName(nextConfig.targetPlayer, partName)
+                if nextPlayer and nextPlayer.Character then
+                    if nextConfig.matchTargetPart then
+                        local targetPart = nextPlayer.Character:FindFirstChild(partName)
+                        if targetPart then
+                            nextTargetCFrame = CFrame.new(targetPart.Position)
+                        end
+                    else
+                        local targetHumanoidRootPart = nextPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if targetHumanoidRootPart then
+                            nextTargetCFrame = CFrame.new(targetHumanoidRootPart.Position)
+                        end
+                    end
+                end
+            else
+                nextTargetCFrame = CFrame.new(baseCFrame.Position)
+            end
+            
+            local currentOffset = CFrame.new(currentConfig.position) *
+                CFrame.Angles(
+                    math.rad(currentConfig.rotation.X),
+                    math.rad(currentConfig.rotation.Y),
+                    math.rad(currentConfig.rotation.Z)
+                )
+            local nextOffset = CFrame.new(nextConfig.position) *
+                CFrame.Angles(
+                    math.rad(nextConfig.rotation.X),
+                    math.rad(nextConfig.rotation.Y),
+                    math.rad(nextConfig.rotation.Z)
+                )
+            
+            local finalCurrentCFrame = currentTargetCFrame * currentOffset
+            local finalNextCFrame = nextTargetCFrame * nextOffset
+            local finalCFrame = finalCurrentCFrame:Lerp(finalNextCFrame, alpha)
+            
+            local _, origYaw, _ = baseCFrame:ToOrientation()
+            finalCFrame = CFrame.new(finalCFrame.Position) * CFrame.Angles(0, origYaw, 0)
+            
+            part.CFrame = finalCFrame
+            part.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            part.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+        end
+    end
+end
+
+local function UpdateHumanoid(character, currentConfig, nextConfig, alpha)
+    local humanoid = character:FindFirstChild("Humanoid")
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if humanoid and humanoidRootPart and initialHumanoidRootPartCFrame then
+        local currentTargetCFrame = initialHumanoidRootPartCFrame
+        local nextTargetCFrame = initialHumanoidRootPartCFrame
+        
+        if currentConfig.targetPlayer and currentConfig.targetPlayer ~= "" then
+            local currentPlayer = FindPlayerByPartialName(currentConfig.targetPlayer, "Humanoid")
+            if currentPlayer and currentPlayer.Character then
+                local targetHumanoidRootPart = currentPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if targetHumanoidRootPart then
+                    currentTargetCFrame = CFrame.new(targetHumanoidRootPart.Position)
+                end
+            end
+        else
+            currentTargetCFrame = CFrame.new(initialHumanoidRootPartCFrame.Position)
+        end
+        
+        if nextConfig.targetPlayer and nextConfig.targetPlayer ~= "" then
+            local nextPlayer = FindPlayerByPartialName(nextConfig.targetPlayer, "Humanoid")
+            if nextPlayer and nextPlayer.Character then
+                local targetHumanoidRootPart = nextPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if targetHumanoidRootPart then
+                    nextTargetCFrame = CFrame.new(targetHumanoidRootPart.Position)
+                end
+            end
+        else
+            nextTargetCFrame = CFrame.new(initialHumanoidRootPartCFrame.Position)
+        end
+        
+        local currentOffset = CFrame.new(currentConfig.position) *
+            CFrame.Angles(
+                math.rad(currentConfig.rotation.X),
+                math.rad(currentConfig.rotation.Y),
+                math.rad(currentConfig.rotation.Z)
+            )
+        local nextOffset = CFrame.new(nextConfig.position) *
+            CFrame.Angles(
+                math.rad(nextConfig.rotation.X),
+                math.rad(nextConfig.rotation.Y),
+                math.rad(nextConfig.rotation.Z)
+            )
+        
+        local finalCurrentCFrame = currentTargetCFrame * currentOffset
+        local finalNextCFrame = nextTargetCFrame * nextOffset
+        local finalCFrame = finalCurrentCFrame:Lerp(finalNextCFrame, alpha)
+        
+        local _, origYaw, _ = initialHumanoidRootPartCFrame:ToOrientation()
+        finalCFrame = CFrame.new(finalCFrame.Position) * CFrame.Angles(0, origYaw, 0)
+        
+        humanoidRootPart.CFrame = finalCFrame
+        humanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        humanoidRootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+        humanoid.WalkSpeed = 16
+    end
+end
+
+local function UpdateBody()
+    local character = localPlayer.Character
+    if character and annoyToggled then
+        local humanoid = character:FindFirstChild("Humanoid")
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoid and humanoidRootPart and initialHumanoidRootPartCFrame then
+            local deltaTime = tick() - lastKeyframeTime
+            animationTime = animationTime + deltaTime
+            lastKeyframeTime = tick()
+            
+            local currentFrame = keyframes[currentKeyframe]
+            local nextFrame = keyframes[currentKeyframe + 1] or keyframes[1]
+            
+            local alpha = math.min(animationTime / currentFrame.duration, 1)
+            
+            for partName, _ in pairs(currentFrame.config) do
+                UpdateBodyPart(character, partName, currentFrame.config[partName], nextFrame.config[partName], alpha)
+            end
+            if currentFrame.config.Humanoid then
+                UpdateHumanoid(character, currentFrame.config.Humanoid, nextFrame.config.Humanoid, alpha)
+            end
+            if alpha >= 1 then
+                currentKeyframe = currentKeyframe + 1
+                if currentKeyframe > #keyframes then
+                    currentKeyframe = 1
+                end
+                animationTime = 0
+            end
+        end
+    end
+end
+
+local function SafeDeactivateAnnoy()
+    for i = 1, 3 do
+        ReplicatedStorage.UnragdollEvent:FireServer()
+        task.wait(0.1)
+    end
+    
+    local character = localPlayer.Character
+    if character then
+        for partName, _ in pairs(keyframes[1].config) do
+            if partName ~= "Humanoid" then
+                local part = character:FindFirstChild(partName)
+                if part and originalPositions[partName] then
+                    part.CFrame = originalPositions[partName]
+                    part.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+                    part.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                end
+            end
+        end
+    end
+    
+    nearestTargetPlayers = {}
+    farthestTargetPlayers = {}
+    randomTargetPlayers = {}
+    initialHumanoidRootPartCFrame = nil
+end
+
+AnnoyServerButton.MouseButton1Click:Connect(function()
+    if lagToggled then return end -- Prevent toggling if Lag Server is active
+
+    annoyToggled = not annoyToggled
+    AnnoyServerButton.Text = "Annoy Server: " .. (annoyToggled and "ON" or "OFF")
+    AnnoyServerButton.BackgroundColor3 = annoyToggled and Color3.fromRGB(60, 40, 40) or Color3.fromRGB(45, 45, 50)
+
+    if annoyToggled then
+        ModifyUsername_upvr:FireServer("VirtuallyNad")
+        wait(1.5)
+        
+        SaveOriginalPositions()
+        currentKeyframe = 1
+        animationTime = 0
+        lastKeyframeTime = tick()
+        
+        if annoyConnection then
+            annoyConnection:Disconnect()
+        end
+        annoyConnection = RunService.Heartbeat:Connect(UpdateBody)
+        
+        ReplicatedStorage.RagdollEvent:FireServer()
+    else
+        if annoyConnection then
+            annoyConnection:Disconnect()
+        end
+        SafeDeactivateAnnoy()
+        ModifyUserEvent:FireServer(localPlayer.Name)
+        wait(0.5)
+    end
+end)
+
+Players.LocalPlayer.CharacterAdded:Connect(function()
+    if annoyToggled then
+        annoyToggled = false
+        if annoyConnection then
+            annoyConnection:Disconnect()
+        end
+        AnnoyServerButton.Text = "Annoy Server: OFF"
+        AnnoyServerButton.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+        SafeDeactivateAnnoy()
+    end
+end)
+
+-----------------------------------------------------------
+-- Anti Lag
 local targetItemNames = {"aura", "Fluffy Satin Gloves Black"}
 local antiLagToggled = true
 
@@ -545,7 +1245,7 @@ local function continuouslyCheckItems()
     end
 end
 
-spawn(continuouslyCheckItems) -- Start Anti-Lag by default
+spawn(continuouslyCheckItems)
 
 -----------------------------------------------------------
 -- Notification System
@@ -554,11 +1254,14 @@ local screenGui = playerGui:FindFirstChild("NotificationGui") or Instance.new("S
 screenGui.Name = "NotificationGui"
 
 local activeNotifications = {}
+local notificationSoundEnabled = true
+local notificationHeight = 80
+local notificationSpacing = 10
 
 local function createNotification()
     local notification = Instance.new("Frame", screenGui)
     notification.Name = "Notification"
-    notification.Size = UDim2.new(0, 300, 0, 80)
+    notification.Size = UDim2.new(0, 300, 0, notificationHeight)
     notification.BackgroundTransparency = 0
     notification.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     notification.Visible = false
@@ -603,15 +1306,24 @@ local function createNotification()
     notificationText.TextWrapped = true
 
     local notificationSound = Instance.new("Sound", notification)
-    notificationSound.SoundId = "rbxassetid://1862047553"
-    notificationSound.Volume = 3
+    notificationSound.SoundId = "rbxassetid://1637297605"
+    notificationSound.Volume = 1.5
 
     return notification, profilePicture, notificationText, notificationSound
 end
 
+local function updateNotificationPositions()
+    for i, notif in ipairs(activeNotifications) do
+        local targetY = -notificationHeight - ((i - 1) * (notificationHeight + notificationSpacing))
+        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(notif, tweenInfo, {Position = UDim2.new(1, -310, 1, targetY)})
+        tween:Play()
+    end
+end
+
 local function showNotification(leavingPlayer)
     local notification, profilePicture, notificationText, notificationSound = createNotification()
-    table.insert(activeNotifications, notification)
+    table.insert(activeNotifications, 1, notification)
 
     notificationText.Text = leavingPlayer.Name .. " has left the server."
     local success, content = pcall(function()
@@ -619,37 +1331,30 @@ local function showNotification(leavingPlayer)
     end)
     profilePicture.Image = success and content or "rbxassetid://0"
 
-    pcall(function()
-        notificationSound:Play()
-    end)
+    if notificationSoundEnabled then
+        pcall(function()
+            notificationSound:Play()
+        end)
+    end
 
     local baseX = 1
     local baseOffsetX = -notification.Size.X.Offset - 10
-    local baseOffsetY = -notification.Size.Y.Offset - 10
-    local stackOffset = (#activeNotifications - 1) * -90
+    local startY = -notificationHeight + 80
+    local showY = -notificationHeight
 
-    local startPos = UDim2.new(baseX, baseOffsetX, 1, baseOffsetY + stackOffset + 80)
-    local showPos = UDim2.new(baseX, baseOffsetX, 1, baseOffsetY + stackOffset)
-
-    notification.Position = startPos
+    notification.Position = UDim2.new(baseX, baseOffsetX, 1, startY)
     notification.Visible = true
 
     local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    local showTween = TweenService:Create(notification, tweenInfo, {Position = showPos})
+    local showTween = TweenService:Create(notification, tweenInfo, {Position = UDim2.new(baseX, baseOffsetX, 1, showY)})
     showTween:Play()
 
-    for i, activeNotif in ipairs(activeNotifications) do
-        if activeNotif ~= notification then
-            local newPos = UDim2.new(baseX, baseOffsetX, 1, baseOffsetY + (i - 1) * -90)
-            activeNotif.Position = newPos
-        end
-    end
+    updateNotificationPositions()
 
     task.spawn(function()
         task.wait(3)
-
         local hideTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-        local hidePos = UDim2.new(baseX, baseOffsetX + 310, 1, baseOffsetY + stackOffset)
+        local hidePos = UDim2.new(baseX, baseOffsetX + 310, 1, showY)
         local hideTween = TweenService:Create(notification, hideTweenInfo, {Position = hidePos})
         hideTween:Play()
         hideTween.Completed:Wait()
@@ -659,16 +1364,27 @@ local function showNotification(leavingPlayer)
         if index then
             table.remove(activeNotifications, index)
         end
-
-        for i, activeNotif in ipairs(activeNotifications) do
-            local newPos = UDim2.new(baseX, baseOffsetX, 1, baseOffsetY + (i - 1) * -90)
-            activeNotif.Position = newPos
-        end
+        updateNotificationPositions()
     end)
 end
 
 Players.PlayerRemoving:Connect(function(leavingPlayer)
     pcall(function()
         showNotification(leavingPlayer)
+    end)
+end)
+
+NotificationToggle.MouseButton1Click:Connect(function()
+    notificationSoundEnabled = not notificationSoundEnabled
+    NotificationToggle.Text = "Notification Sound: " .. (notificationSoundEnabled and "ON" or "OFF")
+    NotificationToggle.BackgroundColor3 = notificationSoundEnabled and Color3.fromRGB(45, 45, 50) or Color3.fromRGB(60, 40, 40)
+end)
+
+DiscordButton.MouseButton1Click:Connect(function()
+    pcall(function()
+        setclipboard("https://discord.gg/SDK4VwJknR")
+        DiscordButton.Text = "Copied!"
+        wait(2)
+        DiscordButton.Text = "Copy Discord Invite"
     end)
 end)
